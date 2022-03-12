@@ -1,0 +1,50 @@
+﻿@*@page "/chat"*@
+@*@page "/chat/{ToUserId:int}"*@
+
+@inject HttpClient _http
+
+<div class="col-12">
+    <p></p>
+</div>
+
+<div style="border:0px;height:90vh;">
+    <div class="panel panel-primary" style="height: 100%;">
+        <div class="panel-heading top-bar">
+            <div class="col-md-8 col-xs-8">
+                <h3 class="panel-title">
+                    @if (ToUser != null && (ToUser.FirstName != null || ToUser.LastName != null))
+                    {
+                        <b>@ToUser.FirstName <span> </span> @ToUser.LastName</b>
+                    }
+                </h3>
+            </div>
+        </div>
+
+        <div id="divMessageContainerBase" class="panel-body msg_container_base">
+        </div>
+
+        <!--CHAT USER BOX-->
+        <div class="panel-footer">
+            <div class="input-group" id="myForm">
+                <input id="txtMessageInput" type="text" class="form-control input-sm chat_input"
+                       placeholder="Write your message here...">
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    [Parameter]
+    public int ToUserId { get; set; } = 1;
+    private List<Contact>? ContactsList { get; set; } = new();
+    public Contact? ToUser { get; set; } = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        ContactsList = await _http.GetFromJsonAsync<List<Contact>>("api/Users");
+
+        ToUser = ContactsList?.FirstOrDefault(con => con?.ContactId == ToUserId);
+    }
+}

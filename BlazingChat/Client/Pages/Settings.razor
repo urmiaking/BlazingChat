@@ -1,0 +1,23 @@
+﻿@page "/settings"
+
+@inject ISettingsViewModel _settingsViewModel
+
+<h2><b>تنظیمات</b></h2> 
+<hr />
+
+<div class="col-12">
+    <input type="checkbox" @bind="@_settingsViewModel.Notifications" id="chkNotification">
+    <label> اعلان ها </label>    
+    <br>   
+
+    <input type="checkbox" @bind="@_settingsViewModel.DarkTheme" id="chkDarkTheme">
+    <label> تم دارک </label>    
+    <br>
+</div>
+<div class="col-12">
+    <button class="btn btn-primary" @onclick="_settingsViewModel.Save">ذخیره</button>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync() => await _settingsViewModel.GetProfile();
+}

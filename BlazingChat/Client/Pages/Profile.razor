@@ -1,0 +1,21 @@
+﻿@page "/"
+@page "/profile"
+
+@inject IProfileViewModel _profileViewModel
+
+<PageTitle>پروفایل</PageTitle>
+
+<div class="col-12">
+    <input class="form-control" type="text" placeholder="نام" @bind-value="_profileViewModel.FirstName" /><br />
+    <input class="form-control" type="text" placeholder="نام خانوادگی" @bind-value="_profileViewModel.LastName" /><br />
+    <input class="form-control" type="text" placeholder="آدرس ایمیل" @bind-value="_profileViewModel.EmailAddress" /><br />
+
+    <button class="btn btn-primary" @onclick="() => _profileViewModel.UpdateProfile()">بروزرسانی</button>
+
+    <span>&nbsp;&nbsp;</span> @_profileViewModel.Message
+</div>
+
+@code
+{
+    protected override async Task OnInitializedAsync() => await _profileViewModel.GetProfile();
+}
